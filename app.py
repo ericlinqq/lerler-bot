@@ -33,9 +33,16 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    text = "喵~"if len(event.message.text) > 5 else "..."
-    message = TextSendMessage(text=text)
+    if event.message.text.find("樂樂") == -1:
+        text = "喵~" if len(event.message.text) > 5 else "..."
+        message = TextSendMessage(text=text)
+    else:
+        message = ImageSendMessage(
+            original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
+            preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
+        )
     line_bot_api.reply_message(event.reply_token, message)
+
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker(event):
     message = StickerSendMessage(
