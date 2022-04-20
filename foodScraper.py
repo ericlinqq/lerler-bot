@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup4
+from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
 from flask import request
 
