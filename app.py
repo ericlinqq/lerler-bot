@@ -8,6 +8,8 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+from .foodScraper import IFoodie
+
 app = Flask(__name__)
 
 # Channel Access Token
@@ -30,24 +32,32 @@ def callback():
         abort(400)
     return 'OK'
 
-# 處理訊息
+# 加入好友歡迎訊息
+@handler.add(FollowEvent)
+def handle_follow(event):
+    message = TextSendMessage(text="喵~我是樂樂")
+
+# 處理文字訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if event.message.text.find("樂樂") == -1:
-        text = "喵~" if len(event.message.text) > 5 else "..."
-        message = TextSendMessage(text=text)
-    else:
+    # 美食爬蟲
+    if "美食" in event.message.text:
+        food = IFoodie(event.message.text[2:])
+        message = TextSendMessage(text=food.scrape())
+
+    if "樂樂" in event.message.text:
         message = ImageSendMessage(
             original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
         )
     line_bot_api.reply_message(event.reply_token, message)
 
+# 處理貼圖訊息
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker(event):
     message = StickerSendMessage(
-        package_id = '1',
-        sticker_id = '1'
+        package_id = '11537',
+        sticker_id = '52002753'
     )
     line_bot_api.reply_message(event.reply_token, message)
 
