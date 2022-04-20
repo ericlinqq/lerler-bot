@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
-from flask import request
+import requests
 
 # 美食抽象類別
 class Food(ABC):
@@ -16,7 +16,7 @@ class Food(ABC):
 class IFoodie(Food):
     
     def scrape(self):
-        response = request.get("https://ifoodie.tw/explore/" + self.area + "/list?sortby=popular&opening=true")
+        response = requests.get("https://ifoodie.tw/explore/" + self.area + "/list?sortby=popular&opening=true")
         soup = BeautifulSoup4(response.content, "html.parser")
 
         # 爬取前五筆餐廳卡片資料
