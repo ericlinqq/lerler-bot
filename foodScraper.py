@@ -17,7 +17,7 @@ class IFoodie(Food):
     
     def scrape(self):
         response = requests.get("https://ifoodie.tw/explore/" + self.area + "/list?sortby=popular&opening=true")
-        soup = BeautifulSoup4(response.content, "html.parser")
+        soup = BeautifulSoup(response.content, "html.parser")
 
         # 爬取前五筆餐廳卡片資料
         cards = soup.find_all(
