@@ -8,7 +8,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-from .foodScraper import IFoodie
+from foodScraper import IFoodie
 
 app = Flask(__name__)
 
