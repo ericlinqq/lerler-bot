@@ -35,7 +35,7 @@ class IFoodie(Food):
             address = card.find(
                 "div", {"class": "jsx-558691085 address-row"}).getText()
             
-            url = 'https://ifoodie.tw/' + card.find(
+            url = 'https://ifoodie.tw' + card.find(
                 "a", {"class": "jsx-558691085 title-text"})['href']
 
             content += f"{title} \n{rating}顆星 \n{address} \n{url} \n\n"
