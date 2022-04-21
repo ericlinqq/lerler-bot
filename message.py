@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from linebot.models import (
     TemplateSendMessage,
-    ButtonTemplate,
+    ButtonsTemplate,
     PostbackTemplateAction
 )
 
@@ -17,8 +17,8 @@ class Message(ABC):
 class AreaMessage(Message):
     def content(self):
         body = TemplateSendMessage(
-            alt_text='Button template', 
-            template=ButtonTemplate(
+            alt_text='Buttons template', 
+            template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇地區',
                     actions=[
@@ -57,8 +57,8 @@ class CategoryMessage(Message):
     
     def content(self):
         body = TemplateSendMessage(
-            alt_text='Button template',
-            template=ButtonTemplate(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇美食類別',
                     actions=[
@@ -91,8 +91,8 @@ class CategoryMessage(Message):
     
     def content(self):
         body = TemplateSendMessage(
-            alt_text='Button template',
-            template=ButtonTemplate(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇消費金額',
                     actions=[
