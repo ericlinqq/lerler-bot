@@ -11,7 +11,9 @@ from linebot.models import (
     MessageEvent,
     PostbackEvent,
     TextSendMessage,
+    TextMessage,
     StickerSendMessage,
+    StickerMessage,
     ImageSendMessage
 )
 
