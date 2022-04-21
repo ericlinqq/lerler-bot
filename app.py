@@ -8,14 +8,19 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+import configparser
+
 from foodScraper import IFoodie
 
 app = Flask(__name__)
 
+config = configparser.Configparser()
+config.read('config.ini')
+
 # Channel Access Token
-line_bot_api = LineBotApi('IqHOXvZP7ZJdexo6qige4/p9JCZGopk92X5fw0NqiU/TZ74ql7EsM8YwlBTdY8jopd/gPIV4QeBP85WCbxRIhfd/ivcHwbwrV9InPjhCehWYYnOItvuEaAQwSLpt2JkdyJPjWLUCi+ezHgITvps6VQdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi(config.get('line-bot', 'CHANNEL_ACCESS_TOKEN'))
 # Channel Secret
-handler = WebhookHandler('46c7b04da56c9338821f32f53c5e85c9')
+handler = WebhookHandler(config.get('line-bot', 'CHANNEL_SECRET'))
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
