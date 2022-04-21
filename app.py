@@ -68,15 +68,14 @@ def handle_message(event):
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
         )
     if message != '':
-        print(event)
         line_bot_api.reply_message(event.reply_token, message)
 
 # 處理美食回傳值事件
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    message = ''
     if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
         message = CategoryMessage(event.postback.data[2:]).content()
-        line_bot_api.reply_message(event.reply_token, message)
     elif event.postback.data[:1] == "B":  # 如果回傳值為「選擇美食類別」
         message = PriceMessage(event.postback.data[2:]).content()
     elif event.postback.data[:1] == "C":  # 如果回傳值為「選擇消費金額」
@@ -89,7 +88,8 @@ def handle_postback(event):
         )
 
         message = TextSendMessage(text=food.scrape())
-        
+    if message != '':    
+        line_bot_api.reply_message(event.reply_token, message)
 
 # 處理貼圖訊息
 @handler.add(MessageEvent, message=StickerMessage)

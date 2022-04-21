@@ -64,19 +64,19 @@ class CategoryMessage(Message):
                     text='請選擇美食類別',
                     actions=[
                         PostbackTemplateAction(
-                            labels='火鍋',
+                            label='火鍋',
                             text='火鍋',
                             data='B&' + self.area +'&火鍋'
                         ),
 
                         PostbackTemplateAction(
-                            labels='早午餐',
+                            label='早午餐',
                             text='早午餐',
                             data='B&' + self.area +'&早午餐'
                         ),
 
                         PostbackTemplateAction(
-                            labels='約會餐廳',
+                            label='約會餐廳',
                             text='約會餐廳',
                             data='B&' + self.area +'&約會餐廳'
                         )
@@ -98,25 +98,25 @@ class PriceMessage(Message):
                     text='請選擇消費金額',
                     actions=[
                         PostbackTemplateAction(
-                            labels='150以內',
+                            label='150以內',
                             text='150以內',
                             data='C&' + self.category +'&1'
                         ),
 
                         PostbackTemplateAction(
-                            labels='150-600',
+                            label='150-600',
                             text='150-600',
                             data='C&' + self.category +'&2'
                         ),
 
                         PostbackTemplateAction(
-                            labels='600-1200',
+                            label='600-1200',
                             text='600-1200',
                             data='C&' + self.category +'&3'
                         ),
 
                         PostbackTemplateAction(
-                            labels='1200以上',
+                            label='1200以上',
                             text='1200以上',
                             data='C&' + self.category +'&4'
                         )
