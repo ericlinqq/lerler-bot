@@ -73,6 +73,7 @@ def handle_message(event):
 # 處理美食回傳值事件
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    print(event)
     if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
         message = CategoryMessage(event.postback.data[2:]).content()
         line_bot_api.reply_message(event.reply_token, message)
