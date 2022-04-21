@@ -76,7 +76,7 @@ def handle_postback(event):
     print(event)
     if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
         message = CategoryMessage(event.postback.data[2:]).content()
-        line_bot_api.reply_message(event.reply_token, message)
+        line_bot_api.reply_message(event.replyToken, message)
     elif event.postback.data[:1] == "B":  # 如果回傳值為「選擇美食類別」
         message = PriceMessage(event.postback.data[2:]).content()
     elif event.postback.data[:1] == "C":  # 如果回傳值為「選擇消費金額」
