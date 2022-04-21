@@ -52,39 +52,45 @@ def callback():
 @handler.add(FollowEvent)
 def handle_follow(event):
     message = TextSendMessage(text="喵~我是樂樂")
+    line_bot_api.reply_message(event.reply_token, message)
 
 # 處理文字訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    message = ''
     # 美食「選擇地區」樣板類別訊息
     if event.message.text == "美食":
         message = AreaMessage().content()  
+    # 樂樂照片
     elif event.message.text == "樂樂":
         message = ImageSendMessage(
             original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
         )
-    line_bot_api.reply_message(event.reply_token, message)
+    if message != '':
+        line_bot_api.reply_message(event.reply_token, message)
 
-# # 處理美食回傳值事件
-# @handler.add(PostbackEvent)
-# def handle_postback(event):
-#     if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
-#         message = CategoryMessage(event.postback.data[2:]).content()
-#     elif event.postback.data[:1] == "B":  # 如果回傳值為「選擇美食類別」
-#         message = PriceMessage(event.postback.data[2:]).content()
-#     elif event.postback.data[:1] == "C":  # 如果回傳值為「選擇消費金額」
-#         result = event.postback.data[2:].split('&')
+# 處理美食回傳值事件
+@handler.add(PostbackEvent)
+def handle_postback(event):
+    message = ''
+    if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
+        message = CategoryMessage(event.postback.data[2:]).content()
+    elif event.postback.data[:1] == "B":  # 如果回傳值為「選擇美食類別」
+        message = PriceMessage(event.postback.data[2:]).content()
+    elif event.postback.data[:1] == "C":  # 如果回傳值為「選擇消費金額」
+        result = event.postback.data[2:].split('&')
 
-#         food = IFoodie(
-#             result[0], # 地區 
-#             result[1], # 美食類別
-#             result[2]  # 消費金額
-#         )
+        food = IFoodie(
+            result[0], # 地區 
+            result[1], # 美食類別
+            result[2]  # 消費金額
+        )
 
-#         message = TextSendMessage(text=food.scrape())
+        message = TextSendMessage(text=food.scrape())
 
-#     line_bot_api.reply_message(event.reply_token, message)
+    if message != '':
+        line_bot_api.reply_message(event.reply_token, message)
 
 # 處理貼圖訊息
 @handler.add(MessageEvent, message=StickerMessage)
