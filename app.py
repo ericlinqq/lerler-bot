@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, Response
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -44,6 +44,7 @@ def callback():
     # handle webhook body
     try:
         handler.handle(body, signature)
+        return Response("{'a': 'b'}", status=201, mimetype='application/json')
     except InvalidSignatureError:
         abort(400)
     return 'OK'
