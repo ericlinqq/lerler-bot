@@ -30,8 +30,10 @@ config.read('config.ini')
 
 # Channel Access Token
 line_bot_api = LineBotApi(config.get('line-bot', 'CHANNEL_ACCESS_TOKEN'))
+print(config.get('line-bot', 'CHANNEL_ACCESS_TOKEN'))
 # Channel Secret
 handler = WebhookHandler(config.get('line-bot', 'CHANNEL_SECRET'))
+print(config.get('line-bot', 'CHANNEL_SECRET'))
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -59,8 +61,7 @@ def handle_message(event):
     # 美食「選擇地區」樣板類別訊息
     if event.message.text == "美食":
         message = AreaMessage().content()  
-
-    if event.message.text == "樂樂":
+    elif event.message.text == "樂樂":
         message = ImageSendMessage(
             original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
