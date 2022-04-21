@@ -85,7 +85,7 @@ class CategoryMessage(Message):
         return body
 
 # 「選擇消費金額」按鈕樣板訊息
-class CategoryMessage(Message):
+class PriceMessage(Message):
     def __init__(self, category):
         self.category = category
     
