@@ -13,6 +13,7 @@ class Message(ABC):
     @abstractmethod
     def content(self):
         pass
+
 # 「選擇地區」按鈕樣板訊息
 class AreaMessage(Message):
     def content(self):
@@ -44,7 +45,7 @@ class AreaMessage(Message):
                             label='高雄市',
                             text='高雄市',
                             data='A&高雄市'
-                        ),
+                        )
                     ]
                 )
             )
@@ -78,7 +79,7 @@ class CategoryMessage(Message):
                             labels='約會餐廳',
                             text='約會餐廳',
                             data='B&' + self.area +'&約會餐廳'
-                        ),
+                        )
                     ]
                 )
             )
@@ -118,7 +119,7 @@ class PriceMessage(Message):
                             labels='1200以上',
                             text='1200以上',
                             data='C&' + self.category +'&4'
-                        ),
+                        )
                     ]
                 )
             )

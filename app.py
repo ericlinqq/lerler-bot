@@ -30,10 +30,8 @@ config.read('config.ini')
 
 # Channel Access Token
 line_bot_api = LineBotApi(config.get('line-bot', 'CHANNEL_ACCESS_TOKEN'))
-print(config.get('line-bot', 'CHANNEL_ACCESS_TOKEN'))
 # Channel Secret
 handler = WebhookHandler(config.get('line-bot', 'CHANNEL_SECRET'))
-print(config.get('line-bot', 'CHANNEL_SECRET'))
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -68,25 +66,25 @@ def handle_message(event):
         )
     line_bot_api.reply_message(event.reply_token, message)
 
-# 處理美食回傳值事件
-@handler.add(PostbackEvent)
-def handle_postback(event):
-    if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
-        message = CategoryMessage(event.postback.data[2:]).content()
-    elif event.postback.data[:1] == "B":  # 如果回傳值為「選擇美食類別」
-        message = PriceMessage(event.postback.data[2:]).content()
-    elif event.postback.data[:1] == "C":  # 如果回傳值為「選擇消費金額」
-        result = event.postback.data[2:].split('&')
+# # 處理美食回傳值事件
+# @handler.add(PostbackEvent)
+# def handle_postback(event):
+#     if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
+#         message = CategoryMessage(event.postback.data[2:]).content()
+#     elif event.postback.data[:1] == "B":  # 如果回傳值為「選擇美食類別」
+#         message = PriceMessage(event.postback.data[2:]).content()
+#     elif event.postback.data[:1] == "C":  # 如果回傳值為「選擇消費金額」
+#         result = event.postback.data[2:].split('&')
 
-        food = IFoodie(
-            result[0], # 地區 
-            result[1], # 美食類別
-            result[2]  # 消費金額
-        )
+#         food = IFoodie(
+#             result[0], # 地區 
+#             result[1], # 美食類別
+#             result[2]  # 消費金額
+#         )
 
-        message = TextSendMessage(text=food.scrape())
+#         message = TextSendMessage(text=food.scrape())
 
-    line_bot_api.reply_message(event.reply_token, message)
+#     line_bot_api.reply_message(event.reply_token, message)
 
 # 處理貼圖訊息
 @handler.add(MessageEvent, message=StickerMessage)
