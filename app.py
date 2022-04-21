@@ -22,7 +22,7 @@ from message import AreaMessage, CategoryMessage, PriceMessage
 
 app = Flask(__name__)
 
-config = configparser.Configparser()
+config = configparser.ConfigParser()
 config.read('config.ini')
 
 # Channel Access Token
