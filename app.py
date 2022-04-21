@@ -7,6 +7,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
+    FollowEvent,
     MessageEvent,
     PostbackEvent,
     TextSendMessage,
