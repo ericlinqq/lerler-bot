@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
 import requests
+from message import Restaurant
 
 # 美食抽象類別
 class Food(ABC):
@@ -30,21 +31,33 @@ class IFoodie(Food):
         cards = soup.find_all(
             'div', {'class': 'jsx-558691085 restaurant-info'}, limit=5)
 
-        content = ""
+        # content = ""
+        count = 0
+        restaurants = []
         for card in cards:
 
             title = card.find(  # 餐廳名稱
                 "a", {"class": "jsx-558691085 title-text"}).getText()
-            
+            print("title: " + title)
             rating = card.find(  # 餐廳評價
                 "div", {"class": "jsx-1207467136 text"}).getText()
-            
+            if count < 2:
+                image = card.find("img")['src']
+            else: 
+                image = card.find("img")['data-src']
+            print("image: " + image)
+
             address = card.find(  #餐廳地址
                 "div", {"class": "jsx-558691085 address-row"}).getText()
             
             url = 'https://ifoodie.tw' + card.find(  # 餐廳愛食記網址
-                "a", {"class": "jsx-558691085 title-text"})['href']
+                "a", {"class": "jsx-558691085"})['href']
+            
+            print("url: " + url)
+            
+            restaurants.append(Restaurant(title, rating, image, address, url).content())
 
-            content += f"{title} \n{rating}顆星 \n{address} \n{url} \n\n"
-        
-        return content
+            count += 1
+            # content += f"{title} \n{rating}顆星 \n{address} \n{url} \n\n"
+
+        return restaurants

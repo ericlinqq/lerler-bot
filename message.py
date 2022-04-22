@@ -2,7 +2,10 @@ from abc import ABC, abstractmethod
 from linebot.models import (
     TemplateSendMessage,
     ButtonsTemplate,
-    PostbackTemplateAction
+    PostbackTemplateAction,
+    CarouselColumn,
+    MessageTemplateAction,
+    URITemplateAction
 )
 
 # 訊息抽象類別
@@ -22,6 +25,7 @@ class AreaMessage(Message):
             template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇地區',
+                    thumbnail_image_url='https://i.imgur.com/5Ka5gah.jpg',
                     actions=[
                         PostbackTemplateAction(
                             label='台北市',
@@ -62,6 +66,7 @@ class CategoryMessage(Message):
             template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇美食類別',
+                    thumbnail_image_url='https://i.imgur.com/8XHABO5.jpg',
                     actions=[
                         PostbackTemplateAction(
                             label='火鍋',
@@ -96,6 +101,7 @@ class PriceMessage(Message):
             template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇消費金額',
+                    thumbnail_image_url='https://i.imgur.com/HBW383b.jpg',
                     actions=[
                         PostbackTemplateAction(
                             label='150以內',
@@ -123,4 +129,35 @@ class PriceMessage(Message):
                     ]
                 )
             )
+        return body
+
+# 「餐廳」 旋轉樣板訊息
+class Restaurant(Message):
+    def __init__(self, title, rating, image, address, url):
+        self.title = title
+        self.rating = rating
+        self.image = image
+        self.address = address
+        self.url = url
+    
+    def content(self):
+        body = CarouselColumn(
+            title=self.title,
+            text=self.rating + '顆星 \n' + self.address,
+            thumbnail_image_url=self.image,
+            actions=[
+                MessageTemplateAction(
+                    label='吃這家',
+                    text='我覺得【' + self.title + '】不錯'
+                ),
+                URITemplateAction(
+                    label='在愛食記上瀏覽',
+                    uri=self.url
+                ),
+                URITemplateAction(
+                    label='Google Maps',
+                    uri='https://www.google.com.tw/maps/place/' + self.address
+                )
+            ]
+        )
         return body

@@ -8,13 +8,16 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     FollowEvent,
+    JoinEvent,
     MessageEvent,
     PostbackEvent,
     TextSendMessage,
     TextMessage,
     StickerSendMessage,
     StickerMessage,
-    ImageSendMessage
+    ImageSendMessage,
+    TemplateSendMessage,
+    CarouselTemplate
 )
 
 import configparser
@@ -49,9 +52,14 @@ def callback():
         abort(400)
     return 'OK'
 
-# 加入好友歡迎訊息
+# 加入好友訊息
 @handler.add(FollowEvent)
 def handle_follow(event):
+    message = TextSendMessage(text="喵~我是樂樂")
+    line_bot_api.reply_message(event.reply_token, message)
+# 加入群組訊息
+@handler.add(JoinEvent)
+def handle_join(event):
     message = TextSendMessage(text="喵~我是樂樂")
     line_bot_api.reply_message(event.reply_token, message)
 
@@ -88,7 +96,14 @@ def handle_postback(event):
             result[2]  # 消費金額
         )
 
-        message = TextSendMessage(text=food.scrape())
+        # message = TextSendMessage(text=food.scrape())
+        message = TemplateSendMessage(
+            alt_text='Carouosel template',
+            template=CarouselTemplate(
+                columns=food.scrape()
+            )
+        )
+
     if message != '':    
         line_bot_api.reply_message(event.reply_token, message)
 
