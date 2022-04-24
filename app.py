@@ -83,11 +83,11 @@ def handle_message(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     message = ''
-    if event.postback.data[:1] == "A":  # 如果回傳值為「選擇地區」
+    if event.postback.data[0] == "A":  # 如果回傳值為「選擇地區」
         message = CategoryMessage(event.postback.data[2:]).content()
-    elif event.postback.data[:1] == "B":  # 如果回傳值為「選擇美食類別」
+    elif event.postback.data[0] == "B":  # 如果回傳值為「選擇美食類別」
         message = PriceMessage(event.postback.data[2:]).content()
-    elif event.postback.data[:1] == "C":  # 如果回傳值為「選擇消費金額」
+    elif event.postback.data[0] == "C":  # 如果回傳值為「選擇消費金額」
         result = event.postback.data[2:].split('&')
 
         food = IFoodie(
@@ -97,13 +97,9 @@ def handle_postback(event):
         )
 
         # message = TextSendMessage(text=food.scrape())
-        message = TemplateSendMessage(
-            alt_text='Carouosel template',
-            template=CarouselTemplate(
-                columns=food.scrape()
-            )
-        )
-
+        message = food.scrape()
+    elif event.postback.data[0] == "D":
+        message = TextSendMessage(text="我也要吃喵~")
     if message != '':    
         line_bot_api.reply_message(event.reply_token, message)
 

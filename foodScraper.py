@@ -2,6 +2,11 @@ from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
 import requests
 from message import Restaurant
+from linebot.models import (
+    TextSendMessage,
+    TemplateSendMessage,
+    CarouselTemplate
+)
 
 # 美食抽象類別
 class Food(ABC):
@@ -27,9 +32,12 @@ class IFoodie(Food):
 
         soup = BeautifulSoup(response.content, "html.parser")
 
-        # 爬取前五筆餐廳卡片資料
+        # 爬取前十筆餐廳卡片資料
         cards = soup.find_all(
-            'div', {'class': 'jsx-558691085 restaurant-info'}, limit=5)
+            'div', {'class': 'jsx-558691085 restaurant-info'}, limit=10)
+        
+        if not cards:
+            return TextSendMessage(text="目前營業中的餐廳，沒有符合的結果喵~")
 
         # content = ""
         count = 0
@@ -38,14 +46,16 @@ class IFoodie(Food):
 
             title = card.find(  # 餐廳名稱
                 "a", {"class": "jsx-558691085 title-text"}).getText()
-            print("title: " + title)
+
             rating = card.find(  # 餐廳評價
                 "div", {"class": "jsx-1207467136 text"}).getText()
             if count < 2:
                 image = card.find("img")['src']
             else: 
                 image = card.find("img")['data-src']
-            print("image: " + image)
+
+            avg_price = card.find(  # 平均消費
+                "div", {"class": "jsx-558691085 avg-price"}).getText()[5:]
 
             address = card.find(  #餐廳地址
                 "div", {"class": "jsx-558691085 address-row"}).getText()
@@ -53,11 +63,15 @@ class IFoodie(Food):
             url = 'https://ifoodie.tw' + card.find(  # 餐廳愛食記網址
                 "a", {"class": "jsx-558691085"})['href']
             
-            print("url: " + url)
             
-            restaurants.append(Restaurant(title, rating, image, address, url).content())
+            restaurants.append(Restaurant(title, rating, avg_price, image, address, url).content())
 
             count += 1
             # content += f"{title} \n{rating}顆星 \n{address} \n{url} \n\n"
 
-        return restaurants
+        return TemplateSendMessage(
+            alt_text='Carouosel template',
+            template=CarouselTemplate(
+                columns=restaurants
+            )
+        )

@@ -133,30 +133,34 @@ class PriceMessage(Message):
 
 # 「餐廳」 旋轉樣板訊息
 class Restaurant(Message):
-    def __init__(self, title, rating, image, address, url):
+    def __init__(self, title, rating, avg_price, image, address, url):
         self.title = title
         self.rating = rating
+        self.avg_price = avg_price
         self.image = image
         self.address = address
         self.url = url
     
     def content(self):
+        split_title = self.title.split(' ')[0]
+
         body = CarouselColumn(
             title=self.title,
-            text=self.rating + '顆星 \n' + self.address,
+            text=self.rating + '⭐\t' + self.avg_price + '\n' + self.address,
             thumbnail_image_url=self.image,
             actions=[
-                MessageTemplateAction(
+                PostbackTemplateAction(
                     label='吃這家',
-                    text='我覺得【' + self.title + '】不錯'
+                    text='我覺得【' + self.title + '】不錯',
+                    data='D'
                 ),
                 URITemplateAction(
-                    label='在愛食記上瀏覽',
+                    label='愛食記',
                     uri=self.url
                 ),
                 URITemplateAction(
                     label='Google Maps',
-                    uri='https://www.google.com.tw/maps/place/' + self.address
+                    uri='https://www.google.com.tw/maps/search/' + split_title + self.address
                 )
             ]
         )
