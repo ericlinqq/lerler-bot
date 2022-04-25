@@ -2,11 +2,6 @@ from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
 import requests
 from message import Restaurant
-from linebot.models import (
-    TextSendMessage,
-    TemplateSendMessage,
-    CarouselTemplate
-)
 
 # 美食抽象類別
 class Food(ABC):
@@ -37,7 +32,7 @@ class IFoodie(Food):
             'div', {'class': 'jsx-558691085 restaurant-info'}, limit=10)
         
         if not cards:
-            return TextSendMessage(text="目前營業中的餐廳，沒有符合的結果喵~")
+            return []
 
         # content = ""
         count = 0
@@ -69,9 +64,4 @@ class IFoodie(Food):
             count += 1
             # content += f"{title} \n{rating}顆星 \n{address} \n{url} \n\n"
 
-        return TemplateSendMessage(
-            alt_text='Carouosel template',
-            template=CarouselTemplate(
-                columns=restaurants
-            )
-        )
+        return restaurants

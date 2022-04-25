@@ -21,7 +21,7 @@ class Message(ABC):
 class AreaMessage(Message):
     def content(self):
         body = TemplateSendMessage(
-            alt_text='Buttons template', 
+            alt_text='[美食] 選擇地區', 
             template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇地區',
@@ -62,7 +62,7 @@ class CategoryMessage(Message):
     
     def content(self):
         body = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text='[美食] 選擇類別',
             template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇美食類別',
@@ -97,7 +97,7 @@ class PriceMessage(Message):
     
     def content(self):
         body = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text='[美食] 選擇消費金額',
             template=ButtonsTemplate(
                     title='Menu',
                     text='請選擇消費金額',
