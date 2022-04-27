@@ -25,29 +25,26 @@ class CWB(Weather):
 
     def get(self):
         url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=' +\
-                token + '&format=JSON&locationName=' + self.city
+                token + '&format=JSON&locationName=' + str(self.city)
         Data = requests.get(url)
         text = Data.text.encode('utf-8')
         Data = (json.loads(text))['records']['location'][0]['weatherElement']
-        res = [[] for _ in range(3)]
+        res = json.load(open('card.json', 'r', encoding='utf-8')) 
+
         for j in range(3):
-            for i in Data:
-                res[j].append(i['time'][j])
-        
-        weather = [CarouselColumn(
-            thumbnail_image_url='https://i.imgur.com/yOgAsKx.jpg',
-            title = '{} ~ {}'.format(data[0]['startTime'][5:-3], data[0]['endTime'][5:-3]),
-            text = '天氣狀況\t{}\n溫度\t{} ~ {} °C\n降雨機率\t{} %'.format(
-                data[0]['parameter']['parameterName'], 
-                data[2]['parameter']['parameterName'], 
-                data[4]['parameter']['parameterName'], 
-                data[1]['parameter']['parameterName']),
-            actions = [
-                URITemplateAction(
-                    label = '詳細內容',
-                    uri = 'https://www.cwb.gov.tw/V8/C/W/County/index.html'
-                )
-            ]
-        ) for data in res]
-        
-        return weather
+            bubble = json.load(open('bubble.json','r',encoding='utf-8'))
+            # title
+            bubble['body']['contents'][0]['text'] = str(self.city) + '未來 36 小時天氣'
+            # time
+            bubble['body']['contents'][1]['contents'][0]['text'] = '{} ~ {}'.format(Data[0]['time'][j]['startTime'][5:-3],Data[0]['time'][j]['endTime'][5:-3])
+            # weather
+            bubble['body']['contents'][3]['contents'][0]['contents'][1]['text'] = Data[0]['time'][j]['parameter']['parameterName']
+            # temp
+            bubble['body']['contents'][3]['contents'][1]['contents'][1]['text'] = '{}°C ~ {}°C'.format(Data[2]['time'][j]['parameter']['parameterName'],Data[4]['time'][j]['parameter']['parameterName'])
+            # rain
+            bubble['body']['contents'][3]['contents'][2]['contents'][1]['text'] = Data[1]['time'][j]['parameter']['parameterName']
+            # comfort
+            bubble['body']['contents'][3]['contents'][3]['contents'][1]['text'] = Data[3]['time'][j]['parameter']['parameterName']
+            res['contents'].append(bubble)
+     
+        return res 

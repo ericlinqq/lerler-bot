@@ -17,7 +17,9 @@ from linebot.models import (
     StickerMessage,
     ImageSendMessage,
     TemplateSendMessage,
-    CarouselTemplate
+    CarouselTemplate,
+    FlexSendMessage,
+    LocationMessage
 )
 
 import configparser
@@ -77,20 +79,21 @@ def handle_message(event):
         message = AreaMessage().content()
 
     # 天氣樣板類別訊息
-    if event.message.text[:2] == "天氣":
+    elif event.message.text[:2] == "天氣":
         city = event.message.text[3:]
         city = city.replace('台', '臺')
         # 使用者輸入的內容並非符合格式
         if not (city in cities):
             message = TextSendMessage(text='查詢格式為: 天氣 縣市')
         else:
-            weather = CWB(city)
-            message = TemplateSendMessage(
-                alt_text='[天氣] 未來36小時天氣預測',
-                template=CarouselTemplate(
-                    columns=weather.get()
+            weather = CWB(city).get()
+            # message = TextSendMessage(text='Hello')
+            message = FlexSendMessage(
+                city+'未來36小時天氣預測', 
+                weather
                 )
-            )
+            print(message)
+         
     # 樂樂照片
     elif event.message.text == "樂樂":
         message = ImageSendMessage(
@@ -141,6 +144,7 @@ def handle_sticker(event):
         sticker_id = '52002753'
     )
     line_bot_api.reply_message(event.reply_token, message)
+
 
 import os
 if __name__ == "__main__":

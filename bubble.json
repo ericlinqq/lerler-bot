@@ -1,0 +1,156 @@
+{
+      "type": "bubble",
+      "size": "kilo",
+      "hero": {
+        "type": "image",
+        "url": "https://i.imgur.com/yOgAsKx.jpg",
+        "size": "full",
+        "aspectMode": "cover",
+        "aspectRatio": "320:213"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "高雄市未來36小時天氣",
+            "weight": "bold",
+            "size": "lg",
+            "wrap": true,
+            "align": "center"
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "text",
+                "text": "04-26 12:00 ~ 04-26 18:00",
+                "color": "#8c8c8c",
+                "size": "sm",
+                "align": "center"
+              }
+            ],
+            "position": "relative",
+            "paddingTop": "sm",
+            "paddingBottom": "sm"
+          },
+          {
+            "type": "separator",
+            "margin": "md"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "sm",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "天氣狀況",
+                    "wrap": true,
+                    "color": "#0099FF",
+                    "weight": "bold",
+                    "flex": 1,
+                    "align": "start"
+                  },
+                  {
+                    "type": "text",
+                    "text": "多雲",
+                    "weight": "bold",
+                    "flex": 1,
+                    "align": "start"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "溫度狀況",
+                    "color": "#0099FF",
+                    "weight": "bold",
+                    "flex": 1,
+                    "align": "start"
+                  },
+                  {
+                    "type": "text",
+                    "text": "28°C ~ 31°C",
+                    "weight": "bold",
+                    "flex": 1,
+                    "align": "start"
+                  }
+                ],
+                "spacing": "sm"
+              },
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "降雨機率",
+                    "color": "#0099FF",
+                    "weight": "bold",
+                    "flex": 1,
+                    "align": "start"
+                  },
+                  {
+                    "type": "text",
+                    "text": "20%",
+                    "flex": 1,
+                    "weight": "bold"
+                  }
+                ],
+                "justifyContent": "space-evenly",
+                "spacing": "sm"
+              },
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "舒適度",
+                    "color": "#0099FF",
+                    "weight": "bold",
+                    "flex": 1,
+                    "align": "start"
+                  },
+                  {
+                    "type": "text",
+                    "text": "舒適至悶熱",
+                    "flex": 1,
+                    "weight": "bold"
+                  }
+                ],
+                "spacing": "sm"
+              }
+            ],
+            "offsetTop": "sm"
+          }
+        ]
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "詳細內容",
+              "uri": "https://www.cwb.gov.tw/V8/C/W/County/index.html"
+            },
+            "height": "sm",
+            "style": "link"
+          }
+        ]
+      }
+    }
