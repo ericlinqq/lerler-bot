@@ -42,7 +42,7 @@ class CWB(Weather):
             # temp
             bubble['body']['contents'][3]['contents'][1]['contents'][1]['text'] = '{}°C ~ {}°C'.format(Data[2]['time'][j]['parameter']['parameterName'],Data[4]['time'][j]['parameter']['parameterName'])
             # rain
-            bubble['body']['contents'][3]['contents'][2]['contents'][1]['text'] = Data[1]['time'][j]['parameter']['parameterName']
+            bubble['body']['contents'][3]['contents'][2]['contents'][1]['text'] = Data[1]['time'][j]['parameter']['parameterName'] + '%'
             # comfort
             bubble['body']['contents'][3]['contents'][3]['contents'][1]['text'] = Data[3]['time'][j]['parameter']['parameterName']
             res['contents'].append(bubble)
