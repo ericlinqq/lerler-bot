@@ -2,10 +2,7 @@ import requests
 import configparser
 from abc import ABC, abstractmethod
 import json
-from linebot.models import (
-    CarouselColumn,
-    URITemplateAction
-)
+
 config = configparser.ConfigParser()
 config.read('config.ini')
 token = config.get('weather', 'WEATHER_TOKEN')
@@ -32,7 +29,7 @@ class CWB(Weather):
         res = json.load(open('card.json', 'r', encoding='utf-8')) 
 
         for j in range(3):
-            bubble = json.load(open('bubble.json','r',encoding='utf-8'))
+            bubble = json.load(open('weather/bubble.json','r',encoding='utf-8'))
             # title
             bubble['body']['contents'][0]['text'] = str(self.city) + '未來 36 小時天氣'
             # time

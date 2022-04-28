@@ -76,7 +76,10 @@ def handle_message(event):
     message = ''
     # 美食「選擇地區」樣板類別訊息
     if event.message.text == "美食":
-        message = AreaMessage().content()
+        message = FlexSendMessage(
+            '[美食] 請選擇地區',
+            AreaMessage().content()
+        )
 
     # 天氣樣板類別訊息
     elif event.message.text[:2] == "天氣":
@@ -86,13 +89,12 @@ def handle_message(event):
         if not (city in cities):
             message = TextSendMessage(text='查詢格式為: 天氣 縣市')
         else:
-            weather = CWB(city).get()
-            # message = TextSendMessage(text='Hello')
+            weather = CWB(city)
+            
             message = FlexSendMessage(
-                city+'未來36小時天氣預測', 
-                weather
+                '[天氣] '+city+'未來36小時天氣預測', 
+                weather.get()
                 )
-            print(message)
          
     # 樂樂照片
     elif event.message.text == "樂樂":
@@ -108,9 +110,16 @@ def handle_message(event):
 def handle_postback(event):
     message = ''
     if event.postback.data[0] == "A":  # 如果回傳值為「選擇地區」
-        message = CategoryMessage(event.postback.data[2:]).content()
+        message = FlexSendMessage(
+            '[美食] 請選擇美食類別',
+            CategoryMessage(event.postback.data[2:]).content()
+        )
+
     elif event.postback.data[0] == "B":  # 如果回傳值為「選擇美食類別」
-        message = PriceMessage(event.postback.data[2:]).content()
+        message = FlexSendMessage(
+            '[美食] 請選擇消費價格',
+            PriceMessage(event.postback.data[2:]).content()
+        )
     elif event.postback.data[0] == "C":  # 如果回傳值為「選擇消費金額」
         result = event.postback.data[2:].split('&')
 
@@ -120,15 +129,13 @@ def handle_postback(event):
             result[2]  # 消費金額
         )
         restaurants = food.scrape()
-        if not restaurants:
+        if restaurants == '':
             message = TextSendMessage(text="找不到搜尋結果喵~")
-        # message = TextSendMessage(text=food.scrape())
+       
         else:
-            message = TemplateSendMessage(
-                alt_text='[美食] 目前營業中的前十大人氣餐廳',
-                template=CarouselTemplate(
-                    columns= food.scrape()
-                )
+            message = FlexSendMessage(
+                '[美食] 目前營業中的前十大人氣餐廳',
+                restaurants
             )
 
     elif event.postback.data[0] == "D":

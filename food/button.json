@@ -1,0 +1,76 @@
+{
+  "type": "bubble",
+  "size": "kilo",
+  "hero": {
+    "type": "image",
+    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "cover"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "請選擇地區",
+        "weight": "bold",
+        "size": "xl"
+      },
+      {
+        "type": "box",
+        "layout": "baseline",
+        "margin": "md",
+        "contents": []
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "lg",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "separator"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "台北市",
+              "data": "A&台北市",
+              "displayText": "台北市"
+            }
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "台中市",
+              "data": "A&台中市",
+              "displayText": "台中市"
+            }
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "label": "台南市",
+              "data": "A&台南市",
+              "displayText": "台南市"
+            }
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "postback",
+              "data": "A&高雄市",
+              "label": "高雄市",
+              "displayText": "高雄市"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

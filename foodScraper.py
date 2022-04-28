@@ -1,7 +1,10 @@
 from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
+import json
+import math
+from urllib.parse import quote
 import requests
-from message import Restaurant
+
 
 # 美食抽象類別
 class Food(ABC):
@@ -32,15 +35,19 @@ class IFoodie(Food):
             'div', {'class': 'jsx-558691085 restaurant-info'}, limit=10)
         
         if not cards:
-            return []
+            return ''
 
         # content = ""
+        
+        res = json.load(open('card.json', 'r', encoding='utf-8'))
         count = 0
-        restaurants = []
+        # restaurants = []
         for card in cards:
+            bubble = json.load(open('food/bubble.json', 'r', encoding='utf-8'))
 
             title = card.find(  # 餐廳名稱
                 "a", {"class": "jsx-558691085 title-text"}).getText()
+            split_title = title.split(' ')[0]
 
             rating = card.find(  # 餐廳評價
                 "div", {"class": "jsx-1207467136 text"}).getText()
@@ -58,10 +65,23 @@ class IFoodie(Food):
             url = 'https://ifoodie.tw' + card.find(  # 餐廳愛食記網址
                 "a", {"class": "jsx-558691085"})['href']
             
+            bubble['hero']['url'] = image
+            bubble['body']['contents'][0]['text'] = title
+
+            for i in range(math.floor(float(rating))):
+                bubble['body']['contents'][1]['contents'][i]['url'] = 'https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png'
+
+            bubble['body']['contents'][1]['contents'][5]['text'] = rating
+           
+            bubble['body']['contents'][1]['contents'][6]['text'] = avg_price
+            bubble['body']['contents'][2]['contents'][0]['contents'][0]['text'] = address
+            bubble['footer']['contents'][0]['action']['uri'] = url
+            bubble['footer']['contents'][1]['action']['uri'] = 'https://www.google.com.tw/maps/search/' + quote(split_title+address)
+            bubble['footer']['contents'][2]['action']['displayText'] = '我覺得【' + title + '】不錯'
+          
             
-            restaurants.append(Restaurant(title, rating, avg_price, image, address, url).content())
-
+            res['contents'].append(bubble)
             count += 1
-            # content += f"{title} \n{rating}顆星 \n{address} \n{url} \n\n"
-
-        return restaurants
+           
+        return res
+        

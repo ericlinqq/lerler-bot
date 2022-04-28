@@ -1,12 +1,5 @@
 from abc import ABC, abstractmethod
-from linebot.models import (
-    TemplateSendMessage,
-    ButtonsTemplate,
-    PostbackTemplateAction,
-    CarouselColumn,
-    MessageTemplateAction,
-    URITemplateAction
-)
+import json
 
 # 訊息抽象類別
 class Message(ABC):
@@ -20,39 +13,10 @@ class Message(ABC):
 # 「選擇地區」按鈕樣板訊息
 class AreaMessage(Message):
     def content(self):
-        body = TemplateSendMessage(
-            alt_text='[美食] 選擇地區', 
-            template=ButtonsTemplate(
-                    title='Menu',
-                    text='請選擇地區',
-                    thumbnail_image_url='https://i.imgur.com/5Ka5gah.jpg',
-                    actions=[
-                        PostbackTemplateAction(
-                            label='台北市',
-                            text='台北市',
-                            data='A&台北市'
-                        ),
 
-                        PostbackTemplateAction(
-                            label='台中市',
-                            text='台中市',
-                            data='A&台中市'
-                        ),
+        body = json.load(open('food/button.json', 'r', encoding='utf-8'))
+        body['hero']['url'] = 'https://i.imgur.com/5Ka5gah.jpg'
 
-                        PostbackTemplateAction(
-                            label='台南市',
-                            text='台南市',
-                            data='A&台南市'
-                        ),
-
-                        PostbackTemplateAction(
-                            label='高雄市',
-                            text='高雄市',
-                            data='A&高雄市'
-                        )
-                    ]
-                )
-            )
         return body
 
 # 「選擇美食類別」按鈕樣板訊息
@@ -61,33 +25,27 @@ class CategoryMessage(Message):
         self.area = area
     
     def content(self):
-        body = TemplateSendMessage(
-            alt_text='[美食] 選擇類別',
-            template=ButtonsTemplate(
-                    title='Menu',
-                    text='請選擇美食類別',
-                    thumbnail_image_url='https://i.imgur.com/8XHABO5.jpg',
-                    actions=[
-                        PostbackTemplateAction(
-                            label='火鍋',
-                            text='火鍋',
-                            data='B&' + self.area +'&火鍋'
-                        ),
+       
+        body = json.load(open('food/button.json', 'r', encoding='utf-8'))
+        body['hero']['url'] = 'https://i.imgur.com/8XHABO5.jpg'
+        body['body']['contents'][0]['text'] = '請選擇美食類別'
 
-                        PostbackTemplateAction(
-                            label='早午餐',
-                            text='早午餐',
-                            data='B&' + self.area +'&早午餐'
-                        ),
+        body['body']['contents'][2]['contents'][1]['action']['label'] = '火鍋'
+        body['body']['contents'][2]['contents'][1]['action']['data'] = 'B&' + self.area + '&火鍋'
+        body['body']['contents'][2]['contents'][1]['action']['displayText'] = '火鍋'
+        
+        body['body']['contents'][2]['contents'][2]['action']['label'] = '早午餐'
+        body['body']['contents'][2]['contents'][2]['action']['data'] = 'B&' + self.area + '&早午餐'
+        body['body']['contents'][2]['contents'][2]['action']['displayText'] = '早午餐'
 
-                        PostbackTemplateAction(
-                            label='約會餐廳',
-                            text='約會餐廳',
-                            data='B&' + self.area +'&約會餐廳'
-                        )
-                    ]
-                )
-            )
+        body['body']['contents'][2]['contents'][3]['action']['label'] = '約會餐廳'
+        body['body']['contents'][2]['contents'][3]['action']['data'] = 'B&' + self.area + '&約會餐廳'
+        body['body']['contents'][2]['contents'][3]['action']['displayText'] = '約會餐廳'
+
+        body['body']['contents'][2]['contents'][4]['action']['label'] = '寵物友善'
+        body['body']['contents'][2]['contents'][4]['action']['data'] = 'B&' + self.area + '&寵物友善'
+        body['body']['contents'][2]['contents'][4]['action']['displayText'] = '寵物友善'
+
         return body
 
 # 「選擇消費金額」按鈕樣板訊息
@@ -96,72 +54,25 @@ class PriceMessage(Message):
         self.category = category
     
     def content(self):
-        body = TemplateSendMessage(
-            alt_text='[美食] 選擇消費金額',
-            template=ButtonsTemplate(
-                    title='Menu',
-                    text='請選擇消費金額',
-                    thumbnail_image_url='https://i.imgur.com/HBW383b.jpg',
-                    actions=[
-                        PostbackTemplateAction(
-                            label='150以內',
-                            text='150以內',
-                            data='C&' + self.category +'&1'
-                        ),
+     
+        body = json.load(open('food/button.json', 'r', encoding='utf-8'))
+        body['hero']['url'] = 'https://i.imgur.com/HBW383b.jpg'
+        body['body']['contents'][0]['text'] = '請選擇消費金額'
 
-                        PostbackTemplateAction(
-                            label='150-600',
-                            text='150-600',
-                            data='C&' + self.category +'&2'
-                        ),
+        body['body']['contents'][2]['contents'][1]['action']['label'] = '150以內'
+        body['body']['contents'][2]['contents'][1]['action']['data'] = 'C&' + self.category + '&1'
+        body['body']['contents'][2]['contents'][1]['action']['displayText'] = '150以內'
+        
+        body['body']['contents'][2]['contents'][2]['action']['label'] = '150-600'
+        body['body']['contents'][2]['contents'][2]['action']['data'] = 'C&' + self.category + '&2'
+        body['body']['contents'][2]['contents'][2]['action']['displayText'] = '150-600'
 
-                        PostbackTemplateAction(
-                            label='600-1200',
-                            text='600-1200',
-                            data='C&' + self.category +'&3'
-                        ),
+        body['body']['contents'][2]['contents'][3]['action']['label'] = '600-1200'
+        body['body']['contents'][2]['contents'][3]['action']['data'] = 'C&' + self.category + '&3'
+        body['body']['contents'][2]['contents'][3]['action']['displayText'] = '600-1200'
 
-                        PostbackTemplateAction(
-                            label='1200以上',
-                            text='1200以上',
-                            data='C&' + self.category +'&4'
-                        )
-                    ]
-                )
-            )
-        return body
+        body['body']['contents'][2]['contents'][4]['action']['label'] = '1200以上'
+        body['body']['contents'][2]['contents'][4]['action']['data'] = 'C&' + self.category + '&4'
+        body['body']['contents'][2]['contents'][4]['action']['displayText'] = '1200以上'
 
-# 「餐廳」 旋轉樣板訊息
-class Restaurant(Message):
-    def __init__(self, title, rating, avg_price, image, address, url):
-        self.title = title
-        self.rating = rating
-        self.avg_price = avg_price
-        self.image = image
-        self.address = address
-        self.url = url
-    
-    def content(self):
-        split_title = self.title.split(' ')[0]
-
-        body = CarouselColumn(
-            title=self.title,
-            text=self.rating + '⭐\t' + self.avg_price + '\n' + self.address,
-            thumbnail_image_url=self.image,
-            actions=[
-                PostbackTemplateAction(
-                    label='吃這家',
-                    text='我覺得【' + self.title + '】不錯',
-                    data='D'
-                ),
-                URITemplateAction(
-                    label='愛食記',
-                    uri=self.url
-                ),
-                URITemplateAction(
-                    label='Google Maps',
-                    uri='https://www.google.com.tw/maps/search/' + split_title + self.address
-                )
-            ]
-        )
         return body
