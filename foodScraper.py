@@ -42,15 +42,22 @@ class IFoodie(Food):
         res = json.load(open('card.json', 'r', encoding='utf-8'))
         count = 0
         # restaurants = []
+        print(cards[-1])
         for card in cards:
             bubble = json.load(open('food/bubble.json', 'r', encoding='utf-8'))
 
             title = card.find(  # 餐廳名稱
                 "a", {"class": "jsx-558691085 title-text"}).getText()
+            print(title)
             split_title = title.split(' ')[0]
 
-            rating = card.find(  # 餐廳評價
-                "div", {"class": "jsx-1207467136 text"}).getText()
+            try:
+                rating = card.find(  # 餐廳評價
+                    "div", {"class": "jsx-1207467136 text"}).getText()
+            except AttributeError:
+                rating = '無'
+                pass
+
             if count < 2:
                 image = card.find("img")['src']
             else: 
@@ -58,7 +65,7 @@ class IFoodie(Food):
 
             avg_price = card.find(  # 平均消費
                 "div", {"class": "jsx-558691085 avg-price"}).getText()[5:]
-
+            
             address = card.find(  #餐廳地址
                 "div", {"class": "jsx-558691085 address-row"}).getText()
             
@@ -68,12 +75,13 @@ class IFoodie(Food):
             bubble['hero']['url'] = image
             bubble['body']['contents'][0]['text'] = title
 
-            for i in range(math.floor(float(rating))):
-                bubble['body']['contents'][1]['contents'][i]['url'] = 'https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png'
+            if rating != '無':
+                for i in range(math.floor(float(rating))):
+                    bubble['body']['contents'][1]['contents'][i]['url'] = 'https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png'
 
             bubble['body']['contents'][1]['contents'][5]['text'] = rating
            
-            bubble['body']['contents'][2]['contents'][0]['text'] = avg_price
+            bubble['body']['contents'][2]['contents'][0]['contents'][0]['text'] = avg_price
             bubble['body']['contents'][3]['contents'][0]['contents'][0]['text'] = address
             bubble['footer']['contents'][0]['action']['uri'] = url
             bubble['footer']['contents'][1]['action']['uri'] = 'https://www.google.com.tw/maps/search/' + quote(split_title+address)
