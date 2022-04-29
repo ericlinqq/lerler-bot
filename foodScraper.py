@@ -73,8 +73,8 @@ class IFoodie(Food):
 
             bubble['body']['contents'][1]['contents'][5]['text'] = rating
            
-            bubble['body']['contents'][1]['contents'][6]['text'] = avg_price
-            bubble['body']['contents'][2]['contents'][0]['contents'][0]['text'] = address
+            bubble['body']['contents'][2]['contents'][0]['text'] = avg_price
+            bubble['body']['contents'][3]['contents'][0]['contents'][0]['text'] = address
             bubble['footer']['contents'][0]['action']['uri'] = url
             bubble['footer']['contents'][1]['action']['uri'] = 'https://www.google.com.tw/maps/search/' + quote(split_title+address)
             bubble['footer']['contents'][2]['action']['displayText'] = '我覺得【' + title + '】不錯'

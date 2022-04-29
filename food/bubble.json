@@ -55,16 +55,27 @@
                 "color": "#8c8c8c",
                 "margin": "md",
                 "flex": 1
-              },
-              {
-                "type": "text",
-                "text": "$7800",
-                "margin": "md",
-                "size": "xs",
-                "color": "#8c8c8c",
-                "flex": 1
               }
             ]
+          },
+          {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "$7800",
+                        "size": "xs",
+                        "color": "#8c8c8c"
+                      }
+                    ]
+                  }
+              ]
           },
           {
             "type": "box",
