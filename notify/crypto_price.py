@@ -26,10 +26,12 @@ if __name__ == "__main__":
         config.read('./config.ini')
         token = config.get('ifttt', 'IFTTT_TOKEN')
         setPrice_above = float(config.get('ifttt', 'SETPRICE_ABOVE'))
+        print("上穿價: ", setPrice_above)
         setPrice_below = float(config.get('ifttt', 'SETPRICE_BELOW'))
+        print("下穿價: ", setPrice_below)
         data = getPrice(url, symbol)
         current_price = float(data['price'])
-        print(current_price)
+        print("目前價: ", current_price)
         if prev_price != -1:
             if  prev_price < setPrice_above and current_price > setPrice_above:
                 msg = '【上穿】目前價格: {}<br>目前設定上穿價格: {}'.format(data['price'], str(setPrice_above)) 
