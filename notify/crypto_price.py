@@ -40,4 +40,3 @@ if __name__ == "__main__":
                 lineNotifyMessage(token, msg) 
         
         prev_price = current_price
-        time.sleep(10)
