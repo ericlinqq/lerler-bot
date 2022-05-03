@@ -87,7 +87,7 @@ def handle_message(event):
         city = city.replace('台', '臺')
         # 使用者輸入的內容並非符合格式
         if not (city in cities):
-            message = TextSendMessage(text='查詢格式為: 天氣 縣市')
+            message = TextSendMessage(text='查詢格式為: 天氣 【縣市】')
         else:
             weather = CWB(city)
             
@@ -95,13 +95,33 @@ def handle_message(event):
                 '[天氣] '+city+'未來36小時天氣預測', 
                 weather.get()
                 )
-         
+
     # 樂樂照片
-    elif event.message.text == "樂樂":
+    elif event.message.text.find("樂樂") != -1 :
         message = ImageSendMessage(
             original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
         )
+    
+    elif event.message.text[:2] == "設定":
+        if event.message.text[2:6] == "上穿價格":
+            try:
+                setPrice_above = float(event.message.text[7:])
+            except Exception as e:
+                print("Error! problem is {}".format(e.args[0]))
+                message = TextSendMessage(text='設定格式為: 設定上穿價格 【價格】')
+            config.set('ifttt', 'SETPRICE_ABOVE', str(setPrice_above))
+            config.write(open('config.ini', 'r+'))
+
+        elif event.message.text[2:6] == "下穿價格":
+            try:
+                setPrice_above = float(event.message.text[7:])
+            except Exception as e:
+                print("Error! problem is {}".format(e.args[0]))
+                message = TextSendMessage(text='設定格式為: 設定下穿價格 【價格】')
+            config.set('ifttt', 'SETPRICE_BELOW', str(setPrice_above))
+            config.write(open('config.ini', 'r+'))
+        
     if message != '':
         line_bot_api.reply_message(event.reply_token, message)
 
