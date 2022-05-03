@@ -30,6 +30,8 @@ from weather.weather import CWB
 
 from food.message import AreaMessage, CategoryMessage, PriceMessage
 
+import json
+
 app = Flask(__name__)
 
 config = configparser.ConfigParser()
@@ -43,6 +45,11 @@ handler = WebhookHandler(config.get('line-bot', 'CHANNEL_SECRET'))
 cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市','桃園縣','高雄市','新竹市','屏東縣'\
                     ,'新竹縣','臺東縣','苗栗縣','花蓮縣','臺中市','宜蘭縣','彰化縣','澎湖縣','南投縣','金門縣','雲林縣','連江縣']
 
+def setPrice(price, type):
+    data = json.load(open('notify/price.json', 'r'))
+    data['set_price_'+type] = price
+    json.dump(data, open('notify/price.json', 'w'))
+    
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -110,17 +117,15 @@ def handle_message(event):
             except Exception as e:
                 print("Error! problem is {}".format(e.args[0]))
                 message = TextSendMessage(text='設定格式為: 設定上穿價格 【價格】')
-            config.set('ifttt', 'SETPRICE_ABOVE', str(setPrice_above))
-            config.write(open('config.ini', 'r+'))
+            setPrice(setPrice_above, "above")
 
         elif event.message.text[2:6] == "下穿價格":
             try:
-                setPrice_above = float(event.message.text[7:])
+                setPrice_below = float(event.message.text[7:])
             except Exception as e:
                 print("Error! problem is {}".format(e.args[0]))
                 message = TextSendMessage(text='設定格式為: 設定下穿價格 【價格】')
-            config.set('ifttt', 'SETPRICE_BELOW', str(setPrice_above))
-            config.write(open('config.ini', 'r+'))
+            setPrice(setPrice_below, "below")
         
     if message != '':
         line_bot_api.reply_message(event.reply_token, message)
