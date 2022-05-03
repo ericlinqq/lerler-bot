@@ -49,6 +49,7 @@ def setPrice(price, type):
     data = json.load(open('notify/price.json', 'r'))
     data['set_price_'+type] = price
     json.dump(data, open('notify/price.json', 'w'))
+    print(type, data['set_price_'+type])
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
