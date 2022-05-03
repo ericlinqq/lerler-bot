@@ -28,6 +28,7 @@ if __name__ == "__main__":
         setPrice_above = float(config.get('ifttt', 'SETPRICE_ABOVE'))
         setPrice_below = float(config.get('ifttt', 'SETPRICE_BELOW'))
         data = getPrice(url, symbol)
+        print("Get Price..........\n")
         current_price = float(data['price'])
         
         if prev_price != -1:
