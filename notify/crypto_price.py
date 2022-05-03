@@ -3,6 +3,9 @@ import configparser
 import time
 import json
 
+price = json.load(open('./notify/price.json', 'r'))
+json.dump(price, open('/tmp/price.json', 'w'))
+
 url = 'https://api.binance.com'
 symbol = 'ETHUSDT'
 config = configparser.ConfigParser()
