@@ -36,12 +36,12 @@ if __name__ == "__main__":
         print("目前價: %.2f" %(current_price))
         if prev_price != -1:
             if  prev_price < setPrice_above and current_price > setPrice_above:
-                msg = '【上穿】<br>目前價格: %.2f<br>目前設定上穿價格: %f' %(data['price'], str(setPrice_above)) 
+                msg = '【上穿】<br>目前價格: %.2f<br>目前設定上穿價格: %f' %(data['price'], setPrice_above) 
                 print("上穿")
                 lineNotifyMessage(token, msg)
 
             if prev_price > setPrice_below and current_price < setPrice_below:
-                msg = '【下穿】<br>目前價格: %.2f<br>目前設定下穿價格: %f' %(data['price'], str(setPrice_below))
+                msg = '【下穿】<br>目前價格: %.2f<br>目前設定下穿價格: %f' %(data['price'], setPrice_below)
                 print("下穿")
                 lineNotifyMessage(token, msg) 
         print("----------------")
