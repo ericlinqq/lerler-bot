@@ -48,7 +48,7 @@ cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市
 def setPrice(price, type):
     data = json.load(open('notify/price.json', 'r'))
     data['set_price_'+type] = price
-    json.dump(data, open('notify/price.json', 'w'))
+    json.dump(data, open('/tmp/price.json', 'w'))
     print(type, data['set_price_'+type])
     
 # 監聽所有來自 /callback 的 Post Request

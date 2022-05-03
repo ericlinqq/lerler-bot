@@ -26,7 +26,7 @@ def lineNotifyMessage(token, msg):
 if __name__ == "__main__":
     prev_price = -1
     while True: 
-        price = json.load(open('./notify/price.json', 'r'))
+        price = json.load(open('/tmp/price.json', 'r'))
         setPrice_above = float(price['set_price_above'])
         print("上穿價: %.2f" %(setPrice_above))
         setPrice_below = float(price['set_price_below'])
