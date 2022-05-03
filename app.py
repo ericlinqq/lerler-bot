@@ -24,11 +24,11 @@ from linebot.models import (
 
 import configparser
 
-from foodScraper import IFoodie
+from food.foodScraper import IFoodie
 
-from weather import CWB
+from weather.weather import CWB
 
-from message import AreaMessage, CategoryMessage, PriceMessage
+from food.message import AreaMessage, CategoryMessage, PriceMessage
 
 app = Flask(__name__)
 

@@ -39,16 +39,14 @@ class IFoodie(Food):
 
         # content = ""
         
-        res = json.load(open('card.json', 'r', encoding='utf-8'))
+        res = json.load(open('./card.json', 'r', encoding='utf-8'))
         count = 0
         # restaurants = []
-        print(cards[-1])
         for card in cards:
             bubble = json.load(open('food/bubble.json', 'r', encoding='utf-8'))
 
             title = card.find(  # 餐廳名稱
                 "a", {"class": "jsx-558691085 title-text"}).getText()
-            print(title)
             split_title = title.split(' ')[0]
 
             try:

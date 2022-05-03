@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 import json
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('./config.ini')
 token = config.get('weather', 'WEATHER_TOKEN')
 
 # 天氣抽象類別
@@ -26,7 +26,7 @@ class CWB(Weather):
         Data = requests.get(url)
         text = Data.text.encode('utf-8')
         Data = (json.loads(text))['records']['location'][0]['weatherElement']
-        res = json.load(open('card.json', 'r', encoding='utf-8')) 
+        res = json.load(open('./card.json', 'r', encoding='utf-8')) 
 
         for j in range(3):
             bubble = json.load(open('weather/bubble.json','r',encoding='utf-8'))
