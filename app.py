@@ -51,7 +51,7 @@ def setPrice(type, event):
     try:
         price = float(event.message.text[7:])
         useRedis.set(type, price)
-        message = TextSendMessage(text='價格設定成功')
+        message = TextSendMessage(text='價格設定成功! \n'+event.message.text[2:])
     except Exception as e:
         print("Error! problem is {}".format(e.args[0]))
         message = TextSendMessage(text='設定格式為: 設定(上穿or下穿)價格 【價格】')
