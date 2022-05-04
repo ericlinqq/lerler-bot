@@ -128,7 +128,7 @@ def handle_message(event):
     elif event.message.text[:4] == "目前價格":
         coin = event.message.text[5:]
         res = getPrice('https://api.binance.com', coin)
-        message = TextSendMessage(text='【%s】目前價格為:\n %f' %(coin, float(res['price'])))
+        message = TextSendMessage(text='【%s】\n目前價格為: %f' %(coin, float(res['price'])))
 
     # Line Notify設定價格提醒 
     elif event.message.text[:2] == "設定":
