@@ -51,7 +51,7 @@ def setPrice(type, event):
     try:
         price = float(event.message.text[7:])
         useRedis.set(type, price)
-        message = TextSendMessage(text='價格設定成功! \n'+event.message.text[2:])
+        message = TextSendMessage(text='價格設定成功! \n%s' %(event.message.text[2:]))
     except Exception as e:
         print("Error! problem is {}".format(e.args[0]))
         message = TextSendMessage(text='設定格式為: 設定(上穿or下穿)價格 【價格】')
@@ -122,7 +122,7 @@ def handle_message(event):
             original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
         )
-    # Line notify設定價格提醒 
+    # Line Notify設定價格提醒 
     elif event.message.text[:2] == "設定":
         if event.message.text[2:6] == "上穿價格": 
             message = setPrice("above", event)
@@ -131,6 +131,12 @@ def handle_message(event):
             message = setPrice("below", event)
     if message != '':
         line_bot_api.reply_message(event.reply_token, message)
+
+    # Line Notify設定價格查詢
+    elif event.message.text == "查詢設定價格":
+        above = useRedis.get("above")
+        below = useRedis.get("below")
+        message = TextSendMessage(text='目前設定價格:\n上穿價格: %f\n下穿價格: %f' %(above, below))
 
 # 處理美食回傳值事件
 @handler.add(PostbackEvent)
