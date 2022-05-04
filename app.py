@@ -128,7 +128,7 @@ def handle_message(event):
     elif event.message.text[:4] == "目前價格":
         coin = event.message.text[5:]
         data = getPrice('https://api.binance.com/api/v3/ticker/price', coin)
-        message = TextSendMessage(text='【%s】目前價格為:\n %f' %(coin, float(data['price']))
+        message = TextSendMessage(text='【%s】目前價格為:\n %f' %(coin, float(data['price'])))
 
     # Line Notify設定價格提醒 
     elif event.message.text[:2] == "設定":
@@ -173,7 +173,7 @@ def handle_postback(event):
         restaurants = food.scrape()
         if restaurants == '':
             message = TextSendMessage(text="找不到搜尋結果喵~")
-       
+        
         else:
             message = FlexSendMessage(
                 '[美食] 目前營業中的前十大人氣餐廳',
