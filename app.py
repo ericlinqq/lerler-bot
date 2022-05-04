@@ -129,14 +129,15 @@ def handle_message(event):
 
         elif event.message.text[2:6] == "下穿價格":
             message = setPrice("below", event)
-    if message != '':
-        line_bot_api.reply_message(event.reply_token, message)
-
+    
     # Line Notify設定價格查詢
     elif event.message.text == "查詢設定價格":
         above = float(useRedis.get("above"))
         below = float(useRedis.get("below"))
         message = TextSendMessage(text='目前設定價格:\n上穿價格: %f\n下穿價格: %f' %(above, below))
+
+    if message != '':
+        line_bot_api.reply_message(event.reply_token, message)
 
 # 處理美食回傳值事件
 @handler.add(PostbackEvent)
