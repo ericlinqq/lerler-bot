@@ -25,10 +25,9 @@ useRedis = redis.Redis(
 def getPrice(url, symbol):
     try:
         data = requests.get(url + '/api/v3/ticker/price', params={'symbol': symbol}).json()
+        return data
     except Exception as e:
         print("Error! problem is {}".format(e.args[0]))
-    
-    return data
 
 def lineNotifyMessage(token, msg):
     r = requests.get('https://maker.ifttt.com/trigger/crypto_alert/with/key/'+token+'?value1='+str(msg))
