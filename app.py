@@ -1,5 +1,4 @@
 from flask import Flask, request, abort, Response
-
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -21,16 +20,11 @@ from linebot.models import (
     FlexSendMessage,
     LocationMessage
 )
-
 import configparser
-
 from food.foodScraper import IFoodie
-
 from weather.weather import CWB
-
 from food.message import AreaMessage, CategoryMessage, PriceMessage
-
-import json
+import redis
 
 app = Flask(__name__)
 
@@ -42,14 +36,31 @@ line_bot_api = LineBotApi(config.get('line-bot', 'CHANNEL_ACCESS_TOKEN'))
 # Channel Secret
 handler = WebhookHandler(config.get('line-bot', 'CHANNEL_SECRET'))
 
+# Redis lab
+redisHost = config.get('redis-lab', 'HOST')
+redisPort = config.get('redis-lab', 'PORT')
+redisPwd = config.get('redis-lab', 'PASSWORD')
+
+useRedis = redis.Redis(
+    host = redisHost,
+    port = redisPort,
+    password = redisPwd
+)
+## 設定價格並儲存至Redis Lab
+def setPrice(type, event):
+    try:
+        price = float(event.message.text[7:])
+        useRedis.set(type, price)
+        message = TextSendMessage(text='價格設定成功')
+    except Exception as e:
+        print("Error! problem is {}".format(e.args[0]))
+        message = TextSendMessage(text='設定格式為: 設定(上穿or下穿)價格 【價格】')
+
+# Weather valid cities
 cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市','桃園縣','高雄市','新竹市','屏東縣'\
                     ,'新竹縣','臺東縣','苗栗縣','花蓮縣','臺中市','宜蘭縣','彰化縣','澎湖縣','南投縣','金門縣','雲林縣','連江縣']
 
-def setPrice(price, type):
-    data = json.load(open('/tmp/price.json', 'r'))
-    data['set_price_'+type] = price
-    json.dump(data, open('/tmp/price.json', 'w'))
-    print(type, data['set_price_'+type])
+
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -110,24 +121,13 @@ def handle_message(event):
             original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
         )
-    
+    # Line notify設定價格提醒 
     elif event.message.text[:2] == "設定":
-        if event.message.text[2:6] == "上穿價格":
-            try:
-                setPrice_above = float(event.message.text[7:])
-            except Exception as e:
-                print("Error! problem is {}".format(e.args[0]))
-                message = TextSendMessage(text='設定格式為: 設定上穿價格 【價格】')
-            setPrice(setPrice_above, "above")
+        if event.message.text[2:6] == "上穿價格": 
+            setPrice("above", event)
 
         elif event.message.text[2:6] == "下穿價格":
-            try:
-                setPrice_below = float(event.message.text[7:])
-            except Exception as e:
-                print("Error! problem is {}".format(e.args[0]))
-                message = TextSendMessage(text='設定格式為: 設定下穿價格 【價格】')
-            setPrice(setPrice_below, "below")
-        
+            setPrice("below", event)
     if message != '':
         line_bot_api.reply_message(event.reply_token, message)
 

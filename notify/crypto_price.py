@@ -1,16 +1,26 @@
 import requests
 import configparser
 import time
-import json
-
-price = json.load(open('./notify/price.json', 'r'))
-json.dump(price, open('/tmp/price.json', 'w'))
+import redis
 
 url = 'https://api.binance.com'
 symbol = 'ETHUSDT'
 config = configparser.ConfigParser()
-config.read('./config.ini')
+config.read('config.ini')
+
+# IFTTT
 token = config.get('ifttt', 'IFTTT_TOKEN')
+
+# Redis lab
+redisHost = config.get('redis-lab', 'HOST')
+redisPort = config.get('redis-lab', 'PORT')
+redisPwd = config.get('redis-lab', 'PASSWORD')
+
+useRedis = redis.Redis(
+    host = redisHost,
+    port = redisPort,
+    password = redisPwd
+)
 
 def getPrice(url, symbol):
     try:
@@ -29,10 +39,9 @@ def lineNotifyMessage(token, msg):
 if __name__ == "__main__":
     prev_price = -1
     while True: 
-        price = json.load(open('/tmp/price.json', 'r'))
-        setPrice_above = float(price['set_price_above'])
+        setPrice_above = float(useRedis.get("above"))
         print("上穿價: %.2f" %(setPrice_above))
-        setPrice_below = float(price['set_price_below'])
+        setPrice_below = float(useRedis.get("below"))
         print("下穿價: %.2f" %(setPrice_below))
         data = getPrice(url, symbol)
         current_price = float(data['price'])
