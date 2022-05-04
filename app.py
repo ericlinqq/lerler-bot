@@ -134,8 +134,8 @@ def handle_message(event):
 
     # Line Notify設定價格查詢
     elif event.message.text == "查詢設定價格":
-        above = useRedis.get("above")
-        below = useRedis.get("below")
+        above = float(useRedis.get("above"))
+        below = float(useRedis.get("below"))
         message = TextSendMessage(text='目前設定價格:\n上穿價格: %f\n下穿價格: %f' %(above, below))
 
 # 處理美食回傳值事件
