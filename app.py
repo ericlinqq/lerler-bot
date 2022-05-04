@@ -55,6 +55,7 @@ def setPrice(type, event):
     except Exception as e:
         print("Error! problem is {}".format(e.args[0]))
         message = TextSendMessage(text='設定格式為: 設定(上穿or下穿)價格 【價格】')
+    return message
 
 # Weather valid cities
 cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市','桃園縣','高雄市','新竹市','屏東縣'\
@@ -124,10 +125,10 @@ def handle_message(event):
     # Line notify設定價格提醒 
     elif event.message.text[:2] == "設定":
         if event.message.text[2:6] == "上穿價格": 
-            setPrice("above", event)
+            message = setPrice("above", event)
 
         elif event.message.text[2:6] == "下穿價格":
-            setPrice("below", event)
+            message = setPrice("below", event)
     if message != '':
         line_bot_api.reply_message(event.reply_token, message)
 
