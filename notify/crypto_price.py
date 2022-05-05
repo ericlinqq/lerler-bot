@@ -30,7 +30,7 @@ def getPrice(url, symbol):
         print("Error! problem is {}".format(e.args[0]))
 
 def lineNotifyMessage(token, symbol, msg):
-    r = requests.get('https://maker.ifttt.com/trigger/crypto_alert/with/key/'+token+'?value1='+str(symbol)+'value2='+str(msg))
+    r = requests.get('https://maker.ifttt.com/trigger/crypto_alert/with/key/'+token+'?value1='+str(symbol)+'&value2='+str(msg))
     if r.text[:5] == "Congr":
         print("【{}】成功推送 ({}) 至 Line".format(str(symbol), str(msg)))
     return r.text
