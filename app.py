@@ -23,8 +23,8 @@ from linebot.models import (
 from food.foodScraper import IFoodie
 from weather.weather import CWB
 from food.message import AreaMessage, CategoryMessage, PriceMessage
-import redis
-from notify.crypto_price import getPrice
+# import redis
+# from notify.crypto_price import getPrice
 from GPT.chatGPT import ChatGPT
 import os
 
@@ -38,25 +38,25 @@ handler = WebhookHandler(os.getenv("CHANNEL_SECRET"))
 working_status = os.getenv("DEFAULT_TALKING") if os.getenv("DEFAULT_TALKING") else True
 
 # Redis lab
-redisHost = os.getenv("HOST")
-redisPort = os.getenv("PORT")
-redisPwd = os.getenv("PASSWORD")
+# redisHost = os.getenv("HOST")
+# redisPort = os.getenv("PORT")
+# redisPwd = os.getenv("PASSWORD")
 
-useRedis = redis.Redis(
-    host = redisHost,
-    port = redisPort,
-    password = redisPwd
-)
+# useRedis = redis.Redis(
+#     host = redisHost,
+#     port = redisPort,
+#     password = redisPwd
+# )
 ## 設定價格並儲存至Redis Lab
-def setPrice(type, event):
-    try:
-        price = float(event.message.text[7:])
-        useRedis.set(type, price)
-        message = TextSendMessage(text='價格設定成功! \n%s' %(event.message.text[2:]))
-    except Exception as e:
-        print("Error! problem is {}".format(e.args[0]))
-        message = TextSendMessage(text='設定格式為: 設定(上穿or下穿)價格 【價格】')
-    return message
+# def setPrice(type, event):
+#     try:
+#         price = float(event.message.text[7:])
+#         useRedis.set(type, price)
+#         message = TextSendMessage(text='價格設定成功! \n%s' %(event.message.text[2:]))
+#     except Exception as e:
+#         print("Error! problem is {}".format(e.args[0]))
+#         message = TextSendMessage(text='設定格式為: 設定(上穿or下穿)價格 【價格】')
+#     return message
 
 # Weather valid cities
 cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市','桃園縣','高雄市','新竹市','屏東縣'\
@@ -155,25 +155,25 @@ def handle_message(event):
             preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
         )
 
-    # 查詢幣安價格
-    elif event.message.text[:4] == "目前價格":
-        coin = event.message.text[5:]
-        res = getPrice('https://api.binance.com', coin)
-        message = TextSendMessage(text='【%s】\n目前價格為: %f' %(coin, float(res['price'])))
+    # # 查詢幣安價格
+    # elif event.message.text[:4] == "目前價格":
+    #     coin = event.message.text[5:]
+    #     res = getPrice('https://api.binance.com', coin)
+    #     message = TextSendMessage(text='【%s】\n目前價格為: %f' %(coin, float(res['price'])))
 
-    # Line Notify設定價格提醒 
-    elif event.message.text[:2] == "設定":
-        if event.message.text[2:6] == "上穿價格": 
-            message = setPrice("above", event)
+    # # Line Notify設定價格提醒 
+    # elif event.message.text[:2] == "設定":
+    #     if event.message.text[2:6] == "上穿價格": 
+    #         message = setPrice("above", event)
 
-        elif event.message.text[2:6] == "下穿價格":
-            message = setPrice("below", event)
+    #     elif event.message.text[2:6] == "下穿價格":
+    #         message = setPrice("below", event)
     
-    # Line Notify設定價格查詢
-    elif event.message.text == "查詢設定價格":
-        above = float(useRedis.get("above"))
-        below = float(useRedis.get("below"))
-        message = TextSendMessage(text='目前設定價格:\n上穿價格: %f\n下穿價格: %f' %(above, below))
+    # # Line Notify設定價格查詢
+    # elif event.message.text == "查詢設定價格":
+    #     above = float(useRedis.get("above"))
+    #     below = float(useRedis.get("below"))
+    #     message = TextSendMessage(text='目前設定價格:\n上穿價格: %f\n下穿價格: %f' %(above, below))
 
     if message != '':
         line_bot_api.reply_message(event.reply_token, message)
