@@ -1,4 +1,4 @@
-from api.prompt import Prompt
+from GPT.prompt import Prompt
 import os
 import openai
 
