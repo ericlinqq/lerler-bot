@@ -35,6 +35,7 @@ chatGPT = ChatGPT()
 line_bot_api = LineBotApi(os.getenv("CHANNEL_ACCESS_TOKEN"))
 # Channel Secret
 handler = WebhookHandler(os.getenv("CHANNEL_SECRET"))
+working_status = os.getenv("DEFAULT_TALKING") if os.getenv("DEFAULT_TALKING") else True
 
 # Redis lab
 redisHost = os.getenv("HOST")
@@ -65,7 +66,6 @@ cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市
 @app.route('/')
 def home():
     return "Hello World!"
-
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
