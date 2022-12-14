@@ -20,7 +20,6 @@ from linebot.models import (
     FlexSendMessage,
     LocationMessage
 )
-import configparser
 from food.foodScraper import IFoodie
 from weather.weather import CWB
 from food.message import AreaMessage, CategoryMessage, PriceMessage
@@ -32,18 +31,15 @@ import os
 app = Flask(__name__)
 chatGPT = ChatGPT()
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-
 # Channel Access Token
-line_bot_api = LineBotApi(config.get('line-bot', 'CHANNEL_ACCESS_TOKEN'))
+line_bot_api = LineBotApi(os.getenv("CHANNEL_ACCESS_TOKEN"))
 # Channel Secret
-handler = WebhookHandler(config.get('line-bot', 'CHANNEL_SECRET'))
+handler = WebhookHandler(os.getenv("CHANNEL_SECRET"))
 
 # Redis lab
-redisHost = config.get('redis-lab', 'HOST')
-redisPort = config.get('redis-lab', 'PORT')
-redisPwd = config.get('redis-lab', 'PASSWORD')
+redisHost = os.getenv("HOST")
+redisPort = os.getenv("PORT")
+redisPwd = os.getenv("PASSWORD")
 
 useRedis = redis.Redis(
     host = redisHost,
