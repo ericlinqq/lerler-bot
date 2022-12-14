@@ -25,7 +25,7 @@ from linebot.models import (
 # from food.message import AreaMessage, CategoryMessage, PriceMessage
 # import redis
 # from notify.crypto_price import getPrice
-from GPT.chatGPT import ChatGPT
+from api.chatGPT import ChatGPT
 import os
 
 app = Flask(__name__)
@@ -84,15 +84,15 @@ def callback():
     return 'OK'
 
 # 加入好友訊息
-@handler.add(FollowEvent)
-def handle_follow(event):
-    message = TextSendMessage(text="喵~我是樂樂")
-    line_bot_api.reply_message(event.reply_token, message)
-# 加入群組訊息
-@handler.add(JoinEvent)
-def handle_join(event):
-    message = TextSendMessage(text="喵~我是樂樂")
-    line_bot_api.reply_message(event.reply_token, message)
+# @handler.add(FollowEvent)
+# def handle_follow(event):
+#     message = TextSendMessage(text="喵~我是樂樂")
+#     line_bot_api.reply_message(event.reply_token, message)
+# # 加入群組訊息
+# @handler.add(JoinEvent)
+# def handle_join(event):
+#     message = TextSendMessage(text="喵~我是樂樂")
+#     line_bot_api.reply_message(event.reply_token, message)
 
 # 處理文字訊息
 @handler.add(MessageEvent, message=TextMessage)
