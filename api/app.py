@@ -78,7 +78,7 @@ def callback():
     # handle webhook body
     try:
         handler.handle(body, signature)
-        return Response("{'a': 'b'}", status=201, mimetype='application/json')
+        # return Response("{'a': 'b'}", status=201, mimetype='application/json')
     except InvalidSignatureError:
         abort(400)
     return 'OK'
