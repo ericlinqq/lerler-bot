@@ -26,8 +26,11 @@ from weather.weather import CWB
 from food.message import AreaMessage, CategoryMessage, PriceMessage
 import redis
 from notify.crypto_price import getPrice
+from GPT.chatGPT import ChatGPT
+import os
 
 app = Flask(__name__)
+chatGPT = ChatGPT()
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -94,7 +97,35 @@ def handle_join(event):
 # 處理文字訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    global working_status
+    if event.message.type != "text":
+        return 
+
+    if event.message.text == "說話":
+        working_status = True
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="我可以說話囉，歡迎來跟我互動 喵~~"))
+        return
+
+    if event.message.text == "閉嘴":
+        working_status = False
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="我乖乖閉嘴 喵..."))
+        return
+
+    if working_status:
+        chatGPT.add_msg(f"HUMAN:{event.message.text}?/n")
+        reply_msg = chatGPT.get_response().replace("AI:", "", 1)
+        chatGPT.add_msg(f"AI:{reply_msg}\n")
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply_msg)
+        )
+    
     message = ''
+
     # 美食「選擇地區」樣板類別訊息
     if event.message.text == "美食":
         message = FlexSendMessage(
@@ -195,7 +226,6 @@ def handle_sticker(event):
     line_bot_api.reply_message(event.reply_token, message)
 
 
-import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
