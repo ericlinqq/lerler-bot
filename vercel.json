@@ -1,7 +1,6 @@
 {
     "builds": [
-        {"src": "app.py", "use": "@vercel/python"},
-        {"src": "notify/crypto_price.py", "use": "@vercel/python"}
+        {"src": "app.py", "use": "@vercel/python"}
     ],
     "routes": [
         {"src": "/(.*)", "dest": "app.py"}
