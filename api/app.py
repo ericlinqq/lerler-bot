@@ -20,9 +20,9 @@ from linebot.models import (
     FlexSendMessage,
     LocationMessage
 )
-from food.foodScraper import IFoodie
-from weather.weather import CWB
-from food.message import AreaMessage, CategoryMessage, PriceMessage
+# from food.foodScraper import IFoodie
+# from weather.weather import CWB
+# from food.message import AreaMessage, CategoryMessage, PriceMessage
 # import redis
 # from notify.crypto_price import getPrice
 from GPT.chatGPT import ChatGPT
@@ -59,8 +59,8 @@ working_status = os.getenv("DEFAULT_TALKING") if os.getenv("DEFAULT_TALKING") el
 #     return message
 
 # Weather valid cities
-cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市','桃園縣','高雄市','新竹市','屏東縣'\
-                    ,'新竹縣','臺東縣','苗栗縣','花蓮縣','臺中市','宜蘭縣','彰化縣','澎湖縣','南投縣','金門縣','雲林縣','連江縣']
+# cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市','桃園縣','高雄市','新竹市','屏東縣'\
+#                     ,'新竹縣','臺東縣','苗栗縣','花蓮縣','臺中市','宜蘭縣','彰化縣','澎湖縣','南投縣','金門縣','雲林縣','連江縣']
 
 # domain root
 @app.route('/')
@@ -124,36 +124,36 @@ def handle_message(event):
             TextSendMessage(text=reply_msg)
         )
     
-    message = ''
+    # message = ''
 
-    # 美食「選擇地區」樣板類別訊息
-    if event.message.text == "美食":
-        message = FlexSendMessage(
-            '[美食] 請選擇地區',
-            AreaMessage().content()
-        )
+    # # 美食「選擇地區」樣板類別訊息
+    # if event.message.text == "美食":
+    #     message = FlexSendMessage(
+    #         '[美食] 請選擇地區',
+    #         AreaMessage().content()
+    #     )
 
-    # 天氣樣板類別訊息
-    elif event.message.text[:2] == "天氣":
-        city = event.message.text[3:]
-        city = city.replace('台', '臺')
-        # 使用者輸入的內容並非符合格式
-        if not (city in cities):
-            message = TextSendMessage(text='查詢格式為: 天氣 【縣市】')
-        else:
-            weather = CWB(city)
+    # # 天氣樣板類別訊息
+    # elif event.message.text[:2] == "天氣":
+    #     city = event.message.text[3:]
+    #     city = city.replace('台', '臺')
+    #     # 使用者輸入的內容並非符合格式
+    #     if not (city in cities):
+    #         message = TextSendMessage(text='查詢格式為: 天氣 【縣市】')
+    #     else:
+    #         weather = CWB(city)
             
-            message = FlexSendMessage(
-                '[天氣] '+city+'未來36小時天氣預測', 
-                weather.get()
-                )
+    #         message = FlexSendMessage(
+    #             '[天氣] '+city+'未來36小時天氣預測', 
+    #             weather.get()
+    #             )
 
-    # 樂樂照片
-    elif event.message.text.find("樂樂") != -1 :
-        message = ImageSendMessage(
-            original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
-            preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
-        )
+    # # 樂樂照片
+    # elif event.message.text.find("樂樂") != -1 :
+    #     message = ImageSendMessage(
+    #         original_content_url = 'https://i.imgur.com/SuatGGC.jpg',
+    #         preview_image_url = 'https://i.imgur.com/SuatGGC.jpg'
+        # )
 
     # # 查詢幣安價格
     # elif event.message.text[:4] == "目前價格":
@@ -175,55 +175,55 @@ def handle_message(event):
     #     below = float(useRedis.get("below"))
     #     message = TextSendMessage(text='目前設定價格:\n上穿價格: %f\n下穿價格: %f' %(above, below))
 
-    if message != '':
-        line_bot_api.reply_message(event.reply_token, message)
+    # if message != '':
+    #     line_bot_api.reply_message(event.reply_token, message)
 
 # 處理美食回傳值事件
-@handler.add(PostbackEvent)
-def handle_postback(event):
-    message = ''
-    if event.postback.data[0] == "A":  # 如果回傳值為「選擇地區」
-        message = FlexSendMessage(
-            '[美食] 請選擇美食類別',
-            CategoryMessage(event.postback.data[2:]).content()
-        )
+# @handler.add(PostbackEvent)
+# def handle_postback(event):
+#     message = ''
+#     if event.postback.data[0] == "A":  # 如果回傳值為「選擇地區」
+#         message = FlexSendMessage(
+#             '[美食] 請選擇美食類別',
+#             CategoryMessage(event.postback.data[2:]).content()
+#         )
 
-    elif event.postback.data[0] == "B":  # 如果回傳值為「選擇美食類別」
-        message = FlexSendMessage(
-            '[美食] 請選擇消費價格',
-            PriceMessage(event.postback.data[2:]).content()
-        )
-    elif event.postback.data[0] == "C":  # 如果回傳值為「選擇消費金額」
-        result = event.postback.data[2:].split('&')
+#     elif event.postback.data[0] == "B":  # 如果回傳值為「選擇美食類別」
+#         message = FlexSendMessage(
+#             '[美食] 請選擇消費價格',
+#             PriceMessage(event.postback.data[2:]).content()
+#         )
+#     elif event.postback.data[0] == "C":  # 如果回傳值為「選擇消費金額」
+#         result = event.postback.data[2:].split('&')
 
-        food = IFoodie(
-            result[0], # 地區 
-            result[1], # 美食類別
-            result[2]  # 消費金額
-        )
-        restaurants = food.scrape()
-        if restaurants == '':
-            message = TextSendMessage(text="找不到搜尋結果喵~")
+#         food = IFoodie(
+#             result[0], # 地區 
+#             result[1], # 美食類別
+#             result[2]  # 消費金額
+#         )
+#         restaurants = food.scrape()
+#         if restaurants == '':
+#             message = TextSendMessage(text="找不到搜尋結果喵~")
         
-        else:
-            message = FlexSendMessage(
-                '[美食] 目前營業中的前十大人氣餐廳',
-                restaurants
-            )
+#         else:
+#             message = FlexSendMessage(
+#                 '[美食] 目前營業中的前十大人氣餐廳',
+#                 restaurants
+#             )
 
-    elif event.postback.data[0] == "D":
-        message = TextSendMessage(text="我也要吃喵~")
-    if message != '':    
-        line_bot_api.reply_message(event.reply_token, message)
+#     elif event.postback.data[0] == "D":
+#         message = TextSendMessage(text="我也要吃喵~")
+#     if message != '':    
+#         line_bot_api.reply_message(event.reply_token, message)
 
-# 處理貼圖訊息
-@handler.add(MessageEvent, message=StickerMessage)
-def handle_sticker(event):
-    message = StickerSendMessage(
-        package_id = '11537',
-        sticker_id = '52002753'
-    )
-    line_bot_api.reply_message(event.reply_token, message)
+# # 處理貼圖訊息
+# @handler.add(MessageEvent, message=StickerMessage)
+# def handle_sticker(event):
+#     message = StickerSendMessage(
+#         package_id = '11537',
+#         sticker_id = '52002753'
+#     )
+#     line_bot_api.reply_message(event.reply_token, message)
 
 
 if __name__ == "__main__":
