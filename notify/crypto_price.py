@@ -1,20 +1,18 @@
 import requests
-import configparser
 import time
 import redis
+import os
 
 url = 'https://api.binance.com'
 symbol = 'ETHUSDT'
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 # IFTTT
-token = config.get('ifttt', 'IFTTT_TOKEN')
+token = os.getenv("IFTTT_TOKEN")
 
 # Redis lab
-redisHost = config.get('redis-lab', 'HOST')
-redisPort = config.get('redis-lab', 'PORT')
-redisPwd = config.get('redis-lab', 'PASSWORD')
+redisHost = os.getenv("HOST")
+redisPort = os.getenv("PORT")
+redisPwd = os.getenv("PASSWORD")
 
 useRedis = redis.Redis(
     host = redisHost,

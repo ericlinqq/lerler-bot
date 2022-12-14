@@ -1,11 +1,9 @@
 import requests
-import configparser
+import os
 from abc import ABC, abstractmethod
 import json
 
-config = configparser.ConfigParser()
-config.read('./config.ini')
-token = config.get('weather', 'WEATHER_TOKEN')
+token = os.getenv("WEATHER_TOKEN")
 
 # 天氣抽象類別
 class Weather(ABC):

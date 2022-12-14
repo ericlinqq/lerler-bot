@@ -1,5 +1,5 @@
 import requests
-import configparser
+import os
 
 def lineNotifyMessage(token, msg):
     headers = {
@@ -13,9 +13,7 @@ def lineNotifyMessage(token, msg):
     return r.status_code
 
 message = "Notify from LINE, Hello world!"
-config = configparser.ConfigParser()
-config.read('./config.ini')
-token = config.get('notify', 'NOTIFY_TOKEN')
+token = os.getenv("NOTIFY_TOKEN")
 
 if __name__ == "__main__":
     lineNotifyMessage(token, message)
